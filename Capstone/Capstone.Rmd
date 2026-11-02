@@ -1,0 +1,29 @@
+---
+title: "Untitled"
+author: "Whit"
+date: "2026-10-21"
+output: html_document
+---
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r}
+personal_income <- read.csv("~/Capstone/CAINC1__ALL_AREAS_1969_2024.csv")
+coal_data <- read.csv("~/Capstone/USCoal.csv")
+unemployment_data <- read.csv("~/Capstone/Unemployment2023.csv")
+```
+
+```{r}
+dim(personal_income)
+dim(coal_data)
+dim(unemployment_data)
+```
+
+```{r}
+head(unemployment_data)
+head(personal_income)
+colnames(personal_income)
+```
+
