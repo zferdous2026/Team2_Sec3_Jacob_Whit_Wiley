@@ -1,2 +1,9 @@
-# Team2_Sec3_Joseph_Whit_Wiley
-test
+# Economic Effect of Coal Mines
+## Team2_Sec3_Joseph_Whit_Wiley
+### This app aims to examine the relationship between coal mines and the economic state of the counties they are present in.
+### The economic indicators utilized include county GDP, individual spending, and unemployment. Indicators are sourced 
+### from the Bureau of Economic Analysis. The coal mine data is from the U.S Geological survey including coal mine locations.
+### The collected data will be used for an interactive map to display counties with and without coal mines with each counties 
+### economic state. Additional scatterplots will be produced to display direct relationships between economic factors and coal
+### mines. The overarching question the data set is answering is do coal mines hinder the local economies they are present in, and if 
+### so why? Is it another example of the paradox of plenty? 
