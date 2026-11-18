@@ -85,7 +85,35 @@ g6 <- ggplot(panel_2023, aes(coal_status, median_household_income_2022, fill = c
        x = "", y = "Median household income, 2022 ($)") +
   theme(legend.position = "none")
 
+base <- summ %>% filter(coal_status == "No coal")
+coal_groups <- summ %>% filter(coal_status != "No coal")
+
+pct_diff <- function(x, b) (x / b - 1) * 100
+
+diffs <- rbind(
+  data.frame(coal_status = coal_groups$coal_status, indicator = "Unemployment rate",
+             diff = pct_diff(coal_groups$unemployment, base$unemployment)),
+  data.frame(coal_status = coal_groups$coal_status, indicator = "Per-capita income",
+             diff = pct_diff(coal_groups$pc_income, base$pc_income)),
+  data.frame(coal_status = coal_groups$coal_status, indicator = "Median household income",
+             diff = pct_diff(coal_groups$hh_income, base$hh_income)),
+  data.frame(coal_status = coal_groups$coal_status, indicator = "GDP per person",
+             diff = pct_diff(coal_groups$gdp_pc, base$gdp_pc))
+)
+
+g7 <- ggplot(diffs, aes(indicator, diff, fill = coal_status)) +
+  geom_col(position = "dodge") +
+  geom_hline(yintercept = 0) +
+  coord_flip() +
+  scale_fill_manual(values = c("Active coal mine" = "firebrick",
+                               "Coal, no active mine" = "orange")) +
+  labs(title = "How coal counties compare to counties without coal, 2023",
+       subtitle = "% difference from the median county with no coal (0 = same as no-coal counties)",
+       x = "", y = "% difference from no-coal counties", fill = "") +
+  theme(legend.position = "bottom")
+
 ggsave("analysis/all_indicators_by_coal_status.png", g4, width = 12, height = 5)
+ggsave("analysis/difference_from_no_coal.png", g7, width = 8, height = 5)
 ggsave("analysis/unemployment_boxplot.png", g5, width = 7, height = 5)
 ggsave("analysis/income_boxplot.png", g6, width = 7, height = 5)
 ggsave("analysis/unemployment_by_coal_status.png", g1, width = 7, height = 5)
@@ -98,3 +126,4 @@ g3
 g4
 g5
 g6
+g7

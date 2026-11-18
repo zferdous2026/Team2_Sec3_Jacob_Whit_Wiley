@@ -6,11 +6,11 @@ find_file <- function(name) {
   path[1]
 }
 
-unemp <- read.csv("~/Unemployment2023.csv")
-income <- read.csv("~/CAINC1__ALL_AREAS_1969_2024.csv", fileEncoding = "latin1")
-gdp <- read.csv("~/GDP.csv", fileEncoding = "latin1")
-coal <- read.csv("~/USCoal.csv")
-
+unemp <- read.csv(find_file("Unemployment2023.csv"))
+income <- read.csv(find_file("CAINC1__ALL_AREAS_1969_2024.csv"), fileEncoding = "latin1")
+gdp <- read.csv(find_file("GDP.csv"), fileEncoding = "latin1")
+coal <- read.csv(find_file("USCoal.csv"))
+mines <- read.csv(find_file("eia_coal_2024.csv"), colClasses = c(fips = "character"))
 
 unemp <- unemp %>%
   mutate(fips = sprintf("%05d", FIPS_Code)) %>%
@@ -98,7 +98,14 @@ counties <- county_list %>%
   left_join(get_unemp("Rural_Urban_Continuum_Code_2023", "rural_urban_continuum_code_2023"), by = "fips") %>%
   left_join(get_unemp("Metro_2023", "metro_2023"), by = "fips") %>%
   left_join(coal_summary, by = "fips") %>%
-  mutate(has_coal = !is.na(coal_records),
+  left_join(mines[, c("fips", "coal_mines_2024", "coal_mines_underground_2024",
+                      "coal_mines_surface_2024", "coal_production_2024")], by = "fips") %>%
+  mutate(coal_production_2024 = ifelse(is.na(coal_mines_2024), 0, coal_production_2024),
+         coal_mines_underground_2024 = ifelse(is.na(coal_mines_2024), 0, coal_mines_underground_2024),
+         coal_mines_surface_2024 = ifelse(is.na(coal_mines_2024), 0, coal_mines_surface_2024),
+         coal_mines_2024 = ifelse(is.na(coal_mines_2024), 0, coal_mines_2024),
+         has_coal_mine = coal_mines_2024 > 0,
+         has_coal = !is.na(coal_records),
          coal_records = ifelse(is.na(coal_records), 0, coal_records),
          coal_tonnage_total = ifelse(is.na(coal_tonnage_total), 0, coal_tonnage_total),
          coal_tonnage_meas_ind = ifelse(is.na(coal_tonnage_meas_ind), 0, coal_tonnage_meas_ind))
@@ -134,9 +141,22 @@ panel <- panel %>%
   left_join(counties, by = "fips") %>%
   arrange(fips, year)
 
-panel_2023 <- panel %>% filter(year == 2023)
+panel <- panel %>%
+  mutate(coal_status = ifelse(has_coal_mine, "Active coal mine",
+                              ifelse(has_coal, "Coal, no active mine", "No coal")))
+
+keep <- c("fips", "state", "county_name", "year", "coal_status", "has_coal", "has_coal_mine",
+          "coal_mines_2024", "coal_production_2024", "coal_tonnage_total",
+          "population", "unemployment_rate", "per_capita_income",
+          "median_household_income_2022", "gdp_per_capita", "mining_share_gdp")
+
+panel_small <- panel[, keep]
+
+panel_2023 <- panel_small %>% filter(year == 2023)
 
 dir.create("app_data", showWarnings = FALSE)
+saveRDS(counties, "app_data/counties.rds")
+saveRDS(panel, "app_data/panel.rds")
 write.csv(counties, "app_data/counties.csv", row.names = FALSE)
-write.csv(panel, "app_data/panel.csv", row.names = FALSE)
+write.csv(panel_small, "app_data/panel.csv", row.names = FALSE)
 write.csv(panel_2023, "app_data/panel_2023.csv", row.names = FALSE)
