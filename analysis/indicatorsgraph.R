@@ -27,8 +27,8 @@ all_indicators <- rbind(
 indicators_graph <- ggplot(all_indicators, aes(coal_status, value, fill = coal_status)) +
   geom_col() +
   facet_wrap(~indicator, scales = "free_y", nrow = 1) +
-  scale_fill_manual(values = c("Active coal mine" = "firebrick",
-                               "Coal, no active mine" = "orange",
+  scale_fill_manual(values = c("Active coal mine" = "#0072B2",
+                               "Coal, no active mine" = "#D55E00",
                                "No coal" = "grey70")) +
   labs(title = "Economic indicators by coal status, 2023 (median county)",
        x = "", y = "", fill = "") +

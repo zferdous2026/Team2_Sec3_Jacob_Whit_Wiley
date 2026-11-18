@@ -34,7 +34,7 @@ map_data <- shapes %>%
            "Active coal mines (2024): ", num(coal_mines_2024), "<br>",
            "Coal production (2024, thousand tons): ", num(coal_production_2024)))
 
-pal <- colorFactor(c("firebrick", "orange", "grey70", "white"),
+pal <- colorFactor(c("#0072B2", "#D55E00", "grey70", "white"),
                    levels = c("Active coal mine", "Coal, no active mine", "No coal", "No data"))
 
 county_map <- leaflet(map_data) %>%

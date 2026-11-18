@@ -31,8 +31,8 @@ g3 <- panel_2023 %>%
   ggplot(aes(unemployment_rate, median_household_income_2022, color = coal_status)) +
   geom_point(alpha = 0.6) +
   geom_smooth(method = "lm", se = FALSE) +
-  scale_color_manual(values = c("Active coal mine" = "firebrick",
-                                "Coal, no active mine" = "orange",
+  scale_color_manual(values = c("Active coal mine" = "#0072B2",
+                                "Coal, no active mine" = "#D55E00",
                                 "No coal" = "grey70")) +
   labs(title = "Unemployment vs. household income by coal status, 2023",
        x = "Unemployment rate, 2023 (%)",
@@ -58,8 +58,8 @@ all_indicators <- rbind(
 g4 <- ggplot(all_indicators, aes(coal_status, value, fill = coal_status)) +
   geom_col() +
   facet_wrap(~indicator, scales = "free_y", nrow = 1) +
-  scale_fill_manual(values = c("Active coal mine" = "firebrick",
-                               "Coal, no active mine" = "orange",
+  scale_fill_manual(values = c("Active coal mine" = "#0072B2",
+                               "Coal, no active mine" = "#D55E00",
                                "No coal" = "grey70")) +
   labs(title = "Economic indicators by coal status, 2023 (median county)",
        x = "", y = "", fill = "") +
@@ -69,8 +69,8 @@ g4 <- ggplot(all_indicators, aes(coal_status, value, fill = coal_status)) +
 
 g5 <- ggplot(panel_2023, aes(coal_status, unemployment_rate, fill = coal_status)) +
   geom_boxplot() +
-  scale_fill_manual(values = c("Active coal mine" = "firebrick",
-                               "Coal, no active mine" = "orange",
+  scale_fill_manual(values = c("Active coal mine" = "#0072B2",
+                               "Coal, no active mine" = "#D55E00",
                                "No coal" = "grey70")) +
   labs(title = "Spread of unemployment rates by coal status, 2023",
        x = "", y = "Unemployment rate (%)") +
@@ -78,8 +78,8 @@ g5 <- ggplot(panel_2023, aes(coal_status, unemployment_rate, fill = coal_status)
 
 g6 <- ggplot(panel_2023, aes(coal_status, median_household_income_2022, fill = coal_status)) +
   geom_boxplot() +
-  scale_fill_manual(values = c("Active coal mine" = "firebrick",
-                               "Coal, no active mine" = "orange",
+  scale_fill_manual(values = c("Active coal mine" = "#0072B2",
+                               "Coal, no active mine" = "#D55E00",
                                "No coal" = "grey70")) +
   labs(title = "Spread of household income by coal status",
        x = "", y = "Median household income, 2022 ($)") +
@@ -105,8 +105,8 @@ g7 <- ggplot(diffs, aes(indicator, diff, fill = coal_status)) +
   geom_col(position = "dodge") +
   geom_hline(yintercept = 0) +
   coord_flip() +
-  scale_fill_manual(values = c("Active coal mine" = "firebrick",
-                               "Coal, no active mine" = "orange")) +
+  scale_fill_manual(values = c("Active coal mine" = "#0072B2",
+                               "Coal, no active mine" = "#D55E00")) +
   labs(title = "How coal counties compare to counties without coal, 2023",
        subtitle = "% difference from the median county with no coal (0 = same as no-coal counties)",
        x = "", y = "% difference from no-coal counties", fill = "") +

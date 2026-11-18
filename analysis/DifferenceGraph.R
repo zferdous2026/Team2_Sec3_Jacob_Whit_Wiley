@@ -35,11 +35,10 @@ difference_graph <- ggplot(diffs, aes(indicator, diff, fill = coal_status)) +
   geom_col(position = "dodge") +
   geom_hline(yintercept = 0) +
   coord_flip() +
-  scale_fill_manual(values = c("Active coal mine" = "firebrick",
-                               "Coal, no active mine" = "orange")) +
-  labs(title = "How coal counties compare to counties without coal, 2023",
-       subtitle = "% difference from the median county with no coal (0 = same as no-coal counties)",
-       x = "", y = "% difference from no-coal counties", fill = "") +
+  scale_fill_manual(values = c("Active coal mine" = "#0072B2",
+                               "Coal, no active mine" = "#D55E00")) +
+  labs(title = "Coal counties vs. counties without coal, 2023",
+       x = "", y = "", fill = "") +
   theme(legend.position = "bottom")
 
 ggsave("analysis/difference_from_no_coal.png", difference_graph, width = 8, height = 5)
